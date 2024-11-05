@@ -183,13 +183,172 @@ describe('getWeeksAtMonth', () => {
 });
 
 describe('getEventsForDay', () => {
-  it('특정 날짜(1일)에 해당하는 이벤트만 정확히 반환한다', () => {});
+  it('특정 날짜(1일)에 해당하는 이벤트만 정확히 반환한다', () => {
+    const events: Event[] = [
+      {
+        id: '1',
+        date: '2024-07-01',
+        title: 'Event 1',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 1',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+      {
+        id: '2',
+        date: '2024-07-02',
+        title: 'Event 2',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 2',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+      {
+        id: '3',
+        date: '2024-10-01',
+        title: 'Event 3',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 3',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+    ];
+    const targetDate = 1;
+    const getEventsForDayResult = getEventsForDay(events, targetDate);
+    const expected = [
+      {
+        id: '1',
+        date: '2024-07-01',
+        title: 'Event 1',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 1',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+      {
+        id: '3',
+        date: '2024-10-01',
+        title: 'Event 3',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 3',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+    ];
 
-  it('해당 날짜에 이벤트가 없을 경우 빈 배열을 반환한다', () => {});
+    expect(getEventsForDayResult).toEqual(expected);
+  });
 
-  it('날짜가 0일 경우 빈 배열을 반환한다', () => {});
+  it('해당 날짜에 이벤트가 없을 경우 빈 배열을 반환한다', () => {
+    const events: Event[] = [
+      {
+        id: '1',
+        date: '2024-07-11',
+        title: 'Event 1',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 1',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+    ];
+    const targetDate = 1;
+    const getEventsForDayResult = getEventsForDay(events, targetDate);
 
-  it('날짜가 32일 이상인 경우 빈 배열을 반환한다', () => {});
+    expect(getEventsForDayResult).toEqual([]);
+  });
+
+  // 날짜가 범위를 벗어난 경우의 테스트가 필요한가? 날짜가 유효한 범위일 때만 필터링되는 것으로 가정한다면, 이 부분은 생략해도 되지 않을까 합니다.
+  it('날짜가 0일 경우 빈 배열을 반환한다', () => {
+    const events: Event[] = [
+      {
+        id: '1',
+        date: '2024-07-01',
+        title: 'Event 1',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 1',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+    ];
+    const targetDate = 0;
+    const result = getEventsForDay(events, targetDate);
+
+    expect(result).toEqual([]);
+  });
+
+  it('날짜가 32일 이상인 경우 빈 배열을 반환한다', () => {
+    const events: Event[] = [
+      {
+        id: '1',
+        date: '2024-07-01',
+        title: 'Event 1',
+        startTime: '10:00',
+        endTime: '11:00',
+        description: 'Description 1',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+    ];
+    const targetDate = 32;
+    const result = getEventsForDay(events, targetDate);
+
+    expect(result).toEqual([]);
+  });
 });
 
 describe('formatWeek', () => {
