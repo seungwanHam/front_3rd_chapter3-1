@@ -1,4 +1,3 @@
-/* eslint-disable vitest/no-commented-out-tests */
 import { Event } from '../../types';
 import {
   fillZero,
