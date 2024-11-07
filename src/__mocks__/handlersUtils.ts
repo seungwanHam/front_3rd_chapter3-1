@@ -19,17 +19,17 @@ export const resetMockEvents = (initEvents = [...baseEvents] as Event[]) => {
 };
 
 // 테스트에 필요한 특정 CRUD 동작만 모킹하도록 설정하는 함수들
-export const setupMockHandlerCreation = () => {
-  resetMockEvents();
+export const setupMockHandlerCreation = (initEvents: Event[] = []) => {
+  resetMockEvents(initEvents);
   server.use(getEventsHandler, postEventHandler);
 };
 
-export const setupMockHandlerUpdating = () => {
-  resetMockEvents();
+export const setupMockHandlerUpdating = (initEvents: Event[] = []) => {
+  resetMockEvents(initEvents);
   server.use(getEventsHandler, putEventHandler);
 };
 
-export const setupMockHandlerDeletion = () => {
-  resetMockEvents();
+export const setupMockHandlerDeletion = (initEvents: Event[] = []) => {
+  resetMockEvents(initEvents);
   server.use(getEventsHandler, deleteEventHandler);
 };

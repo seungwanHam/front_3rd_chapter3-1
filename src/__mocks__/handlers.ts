@@ -40,7 +40,7 @@ export const putEventHandler = http.put('/api/events/:id', async ({ request, par
 export const deleteEventHandler = http.delete('/api/events/:id', ({ params }) => {
   const { id } = params;
   events = events.filter((event) => event.id !== id);
-  return HttpResponse.json(null, { status: 204 });
+  return HttpResponse.json(events, { status: 204 });
 });
 
 // 기본 핸들러 배열
