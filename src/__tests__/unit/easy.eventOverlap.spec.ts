@@ -42,7 +42,7 @@ describe('convertEventToDateRange', () => {
       },
       notificationTime: 0,
     };
-    expect(convertEventToDateRange({ ...event })).toEqual({
+    expect(convertEventToDateRange(event)).toEqual({
       start: new Date('2024-07-01T14:30'),
       end: new Date('2024-07-01T15:30'),
     });
@@ -65,7 +65,7 @@ describe('convertEventToDateRange', () => {
       },
       notificationTime: 0,
     };
-    expect(convertEventToDateRange({ ...event })).toEqual({
+    expect(convertEventToDateRange(event)).toEqual({
       start: new Date('Invalid Date'),
       end: new Date('Invalid Date'),
     });
@@ -88,7 +88,7 @@ describe('convertEventToDateRange', () => {
       },
       notificationTime: 0,
     };
-    expect(convertEventToDateRange({ ...event })).toEqual({
+    expect(convertEventToDateRange(event)).toEqual({
       start: new Date('Invalid Date'),
       end: new Date('Invalid Date'),
     });
@@ -170,7 +170,168 @@ describe('isOverlapping', () => {
 });
 
 describe('findOverlappingEvents', () => {
-  it('새 이벤트와 겹치는 모든 이벤트를 반환한다', () => {});
+  it('새 이벤트와 겹치는 모든 이벤트를 반환한다', () => {
+    const events: Event[] = [
+      {
+        id: '1',
+        date: '2024-07-01',
+        startTime: '14:30',
+        endTime: '15:30',
+        title: 'Event 1',
+        description: 'Description 1',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+      {
+        id: '2',
+        date: '2024-07-01',
+        startTime: '15:00',
+        endTime: '16:00',
+        title: 'Event 2',
+        description: 'Description 2',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+      {
+        id: '3',
+        date: '2024-07-01',
+        startTime: '16:00',
+        endTime: '17:00',
+        title: 'Event 3',
+        description: 'Description 3',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+    ];
+    const newEvent: Event = {
+      id: '1',
+      date: '2024-07-01',
+      startTime: '15:30',
+      endTime: '16:30',
+      title: 'Event 4',
+      description: 'Description 4',
+      location: '',
+      category: '',
+      repeat: {
+        type: 'daily',
+        interval: 1,
+        endDate: '2024-07-10',
+      },
+      notificationTime: 0,
+    };
+    expect(findOverlappingEvents(newEvent, events)).toEqual([
+      {
+        id: '2',
+        date: '2024-07-01',
+        startTime: '15:00',
+        endTime: '16:00',
+        title: 'Event 2',
+        description: 'Description 2',
+        location: '',
+        category: '',
+        repeat: { type: 'daily', interval: 1, endDate: '2024-07-10' },
+        notificationTime: 0,
+      },
+      {
+        id: '3',
+        date: '2024-07-01',
+        startTime: '16:00',
+        endTime: '17:00',
+        title: 'Event 3',
+        description: 'Description 3',
+        location: '',
+        category: '',
+        repeat: { type: 'daily', interval: 1, endDate: '2024-07-10' },
+        notificationTime: 0,
+      },
+    ]);
+  });
 
-  it('겹치는 이벤트가 없으면 빈 배열을 반환한다', () => {});
+  it('겹치는 이벤트가 없으면 빈 배열을 반환한다', () => {
+    const events: Event[] = [
+      {
+        id: '1',
+        date: '2024-07-01',
+        startTime: '14:30',
+        endTime: '15:30',
+        title: 'Event 1',
+        description: 'Description 1',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+      {
+        id: '2',
+        date: '2024-07-01',
+        startTime: '15:00',
+        endTime: '16:00',
+        title: 'Event 2',
+        description: 'Description 2',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+      {
+        id: '3',
+        date: '2024-07-01',
+        startTime: '16:00',
+        endTime: '17:00',
+        title: 'Event 3',
+        description: 'Description 3',
+        location: '',
+        category: '',
+        repeat: {
+          type: 'daily',
+          interval: 1,
+          endDate: '2024-07-10',
+        },
+        notificationTime: 0,
+      },
+    ];
+    const newEvent: Event = {
+      id: '1',
+      date: '2024-07-01',
+      startTime: '17:00',
+      endTime: '18:00',
+      title: 'Event 4',
+      description: 'Description 4',
+      location: '',
+      category: '',
+      repeat: {
+        type: 'daily',
+        interval: 1,
+        endDate: '2024-07-10',
+      },
+      notificationTime: 0,
+    };
+    expect(findOverlappingEvents(newEvent, events)).toEqual([]);
+  });
 });
